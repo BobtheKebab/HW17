@@ -12,7 +12,10 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  return -1;
+  mkfifo("luigi", 0600);
+  int from_client = open("luigi", O_RDONLY, 0);
+  remove("luigi");
+  return from_client;
 }
 
 
@@ -25,6 +28,10 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
+  int f = fork();
+  if (f) {
+    
+  }
   return -1;
 }
 
