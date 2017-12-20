@@ -12,13 +12,14 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-	if(mkfifo("luigi", 0600) < 0)
-  		printf("%s\n", strerror(errno));
-	printf("[server] waiting for connection\n");
-	int from_client = open("luigi", O_RDONLY, 0);
-	printf("[server] connection has been made\n");
-	remove("luigi");
-	return from_client;
+  if(mkfifo("luigi", 0600) < 0) {
+    printf("%s\n", strerror(errno));
+  }
+  printf("[server] waiting for connection\n");
+  int from_client = open("luigi", O_RDONLY, 0);
+  printf("[server] connection has been made\n");
+  remove("luigi");
+  return from_client;
 }
 
 
@@ -31,19 +32,19 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
-    char name[HANDSHAKE_BUFFER_SIZE];
-    //PRINT("About to read");
-    read(from_client, name, sizeof(name));
-    printf("[server] received: %s\n", name);
+  char name[HANDSHAKE_BUFFER_SIZE];
+  //PRINT("About to read");
+  read(from_client, name, sizeof(name));
+  printf("[server] received: %s\n", name);
 
-    int to_client = open(name, O_WRONLY, 0);
-    write(to_client, ACK, sizeof(ACK));
-    printf("[server] sent: %s\n", ACK);
+  int to_client = open(name, O_WRONLY, 0);
+  write(to_client, ACK, sizeof(ACK));
+  printf("[server] sent: %s\n", ACK);
 
-    read(from_client, name, sizeof(name));
-    printf("[server] received: %s\n", name);
-    if (!strcmp(ACK, name)) return to_client;
-    return -1;
+  read(from_client, name, sizeof(name));
+  printf("[server] received: %s\n", name);
+  if (!strcmp(ACK, name)) return to_client;
+  return -1;
 }
 
 /*=========================

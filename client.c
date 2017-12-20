@@ -13,7 +13,7 @@ int main() {
     fgets(buffer, sizeof(buffer), stdin);
     *strchr(buffer, '\n') = 0;
     write(to_server, buffer, sizeof(buffer));
-	if(!strcmp(buffer, "exit")) exit(0);
+    if(!strcmp(buffer, "exit")) exit(0);
     read(from_server, buffer, sizeof(buffer));
     printf("received: [%s]\n", buffer);
   }
