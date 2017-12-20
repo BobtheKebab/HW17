@@ -15,5 +15,6 @@ int main() {
     write(to_server, buffer, sizeof(buffer));
     read(from_server, buffer, sizeof(buffer));
     printf("received: [%s]\n", buffer);
+	if(!strcmp(buffer, "exit")) exit(0);
   }
 }
